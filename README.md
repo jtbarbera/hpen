@@ -405,13 +405,21 @@ Built from:
 ## 🔄 Pipeline Overview
 
 ```mermaid
-flowchart LR
-    A["Pocket Recorder<br/>(Audio Capture)"]
-    B["HeyPocket MCP API<br/>- search recordings<br/>- fetch transcripts"]
-    C["PowerShell Processing (hpen)<br/>- Normalize segments<br/>- Deduplicate text<br/>- Timestamp alignment<br/>- Language list dedupe"]
-    D["Azure Translator API<br/>- Batch translation<br/>- Multi-language output"]
-    E["ENEX Builder<br/>- XML wrapper<br/>- Evernote format<br/>- Sections per language"]
-    F["Output<br/>data/output/*.enex<br/>+ processed_ids.txt<br/>(checkpoint tracking)"]
+flowchart TB
 
-    A --> B --> C --> D --> E --> F
+    subgraph ABC [Capture & Processing]
+        A["Pocket Recorder"]
+        B["HeyPocket API"]
+        C["PowerShell Processing"]
+        A --> B --> C
+    end
+
+    subgraph DEF [Translation & Export]
+        D["Azure Translator"]
+        E["ENEX Builder"]
+        F["Output"]
+        D --> E --> F
+    end
+
+    ABC --> DEF
 ```
