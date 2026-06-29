@@ -407,19 +407,27 @@ Built from:
 ```mermaid
 flowchart TB
 
-    subgraph ABC [Capture & Processing]
-        A["Pocket Recorder"]
-        B["HeyPocket API"]
-        C["PowerShell Processing"]
-        A --> B --> C
+    %% --- Stage 1 ---
+    subgraph ABC [📥 Capture & Processing]
+        direction LR
+        A["Pocket Recorder"] --> 
+        B["MCP API"] --> 
+        C["Processing"]
     end
 
-    subgraph DEF [Translation & Export]
-        D["Azure Translator"]
-        E["ENEX Builder"]
+    %% --- Stage 2 ---
+    subgraph DEF [🌍 Translation & Export]
+        direction LR
+        D["Translator"] --> 
+        E["ENEX Builder"] --> 
         F["Output"]
-        D --> E --> F
     end
 
+    %% --- Flow between stages ---
     ABC --> DEF
+
+    %% --- Styling ---
+    style ABC fill:#0f172a,stroke:#3b82f6,color:#e5e7eb
+    style DEF fill:#0f172a,stroke:#10b981,color:#e5e7eb
 ```
+
