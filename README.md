@@ -71,7 +71,7 @@ project-root/
 
 * HeyPocket API token
 * Azure Translator key
-* Azure region (currently `westus2`)
+* Azure region
 
 ### ✅ PowerShell
 
