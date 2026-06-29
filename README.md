@@ -404,13 +404,6 @@ Built from:
 
 ***
 
-If you want, I can also generate:
-
-* a `run.bat`
-* a minimal install step script
-* or a GitHub-ready repo structure with badges and usage examples
-
-
 ## 🔄 Pipeline Overview
 
 ┌───────────────────────┐
