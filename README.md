@@ -406,12 +406,12 @@ Built from:
 
 ```mermaid
 flowchart LR
-    A[Pocket Recorder\n(Audio Capture)]
-    B[HeyPocket MCP API\n- search recordings\n- fetch transcripts]
-    C[PowerShell Processing (hpen)\n- Normalize segments\n- Deduplicate text\n- Timestamp alignment\n- Language list dedupe]
-    D[Azure Translator API\n- Batch translation\n- Multi-language output]
-    E[ENEX Builder\n- XML wrapper\n- Evernote format\n- Sections per language]
-    F[Output\n data/output/*.enex\n + processed_ids.txt\n (checkpoint tracking)]
+    A["Pocket Recorder<br/>(Audio Capture)"]
+    B["HeyPocket MCP API<br/>- search recordings<br/>- fetch transcripts"]
+    C["PowerShell Processing (hpen)<br/>- Normalize segments<br/>- Deduplicate text<br/>- Timestamp alignment<br/>- Language list dedupe"]
+    D["Azure Translator API<br/>- Batch translation<br/>- Multi-language output"]
+    E["ENEX Builder<br/>- XML wrapper<br/>- Evernote format<br/>- Sections per language"]
+    F["Output<br/>data/output/*.enex<br/>+ processed_ids.txt<br/>(checkpoint tracking)"]
 
     A --> B --> C --> D --> E --> F
-
+```
