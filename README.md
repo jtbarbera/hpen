@@ -402,5 +402,16 @@ Built from:
 > The hardest problem solved here wasn’t translation —  
 > it was ensuring **data shape consistency in PowerShell pipelines**.
 
+## 🔄 Pipeline Overview
 
+```mermaid
+flowchart LR
+    A[Pocket Recorder\n(Audio Capture)]
+    B[HeyPocket MCP API\n- search recordings\n- fetch transcripts]
+    C[PowerShell Processing (hpen)\n- Normalize segments\n- Deduplicate text\n- Timestamp alignment\n- Language list dedupe]
+    D[Azure Translator API\n- Batch translation\n- Multi-language output]
+    E[ENEX Builder\n- XML wrapper\n- Evernote format\n- Sections per language]
+    F[Output\n data/output/*.enex\n + processed_ids.txt\n (checkpoint tracking)]
+
+    A --> B --> C --> D --> E --> F
 
