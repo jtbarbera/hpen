@@ -402,54 +402,5 @@ Built from:
 > The hardest problem solved here wasn’t translation —  
 > it was ensuring **data shape consistency in PowerShell pipelines**.
 
-***
-
-## 🔄 Pipeline Overview
-
-┌───────────────────────┐
-│   Pocket Recorder     │
-│   (Audio Capture)     │
-└─────────┬─────────────┘
-          │
-          ▼
-┌───────────────────────┐
-│ HeyPocket MCP API     │
-│ - search recordings   │
-│ - fetch transcripts   │
-└─────────┬─────────────┘
-          │
-          ▼
-┌──────────────────────────────┐
-│ PowerShell Processing (hpen) │
-│                              │
-│ - Normalize segments         │
-│ - Deduplicate text           │
-│ - Timestamp alignment        │
-│ - Language list dedupe       │
-└─────────┬────────────────────┘
-          │
-          ▼
-┌──────────────────────────────┐
-│ Azure Translator API         │
-│ - Batch translation          │
-│ - Multi-language output      │
-└─────────┬────────────────────┘
-          │
-          ▼
-┌──────────────────────────────┐
-│ ENEX Builder                 │
-│ - XML wrapper                │
-│ - Evernote format            │
-│ - Sections per language      │
-└─────────┬────────────────────┘
-          │
-          ▼
-┌──────────────────────────────┐
-│ Output                       │
-│ data/output/*.enex           │
-│                              │
-│ + processed_ids.txt          │
-│   (checkpoint tracking)      │
-└──────────────────────────────┘
 
 
