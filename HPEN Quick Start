@@ -1,0 +1,67 @@
+## 🚀 Quick Start
+
+### 1. Clone
+
+bash
+git clone https://github.com/yourname/heypocket-export.git
+cd heypocket-export
+
+Run Setup
+POWERSHELL
+.\install.ps1
+
+POWERSHELL
+setx HEYPOCKET_API_TOKEN "your-token"
+setx MS_TRANSLATOR_KEY "your-key"
+setx MS_TRANSLATOR_REGION "westus2"
+
+RUN
+run en,fr,es
+
+OUTPUT
+data/output/*.enex
+
+---
+
+# ✅ Usage Examples Block
+
+```md
+## ▶️ Usage Examples
+
+| Command | Result |
+|--------|--------|
+| `run` | Export original transcripts only |
+| `run en` | Translate to English |
+| `run en,fr` | Multi-language output |
+| `run en,fr,es,en` | Duplicate languages automatically deduped |
+
+---
+
+## 🔁 Reprocessing
+
+```powershell
+del data\processed_ids.txt
+
+---
+
+# 🧠 Short “Why It Matters” Section
+
+```md
+## 🧠 Why This Exists
+
+This tool bridges:
+
+- 🎙️ Real-world speech capture (Pocket)
+- 🌐 Cloud translation (Azure)
+- 📝 Structured knowledge systems (ENEX / Evernote)
+
+Allowing users to:
+
+✔ Record in any language  
+✔ Translate instantly  
+✔ Store as structured, searchable notes  
+
+## ⚠️ Known Quirk (Handled)
+
+PowerShell may collapse single-item JSON arrays into objects.
+This tool forces correct array format to ensure API reliability.
