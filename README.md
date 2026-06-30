@@ -54,7 +54,10 @@ It allows users to:
 project-root/
 │
 ├── hpen.ps1                 # Main script
-├── config.ps1              # Optional local config
+├── install.ps1              # One-time setup (folders, checkpoint, config.ps1)
+├── run.bat                  # Convenience launcher (run / run es,fr)
+├── config_template.ps1      # Copy to config.ps1 and fill in values
+├── config.ps1               # Optional local config (gitignored)
 │
 └── data/
     ├── output/             # Generated ENEX files
@@ -90,13 +93,23 @@ setx MS_TRANSLATOR_KEY "your-key"
 setx MS_TRANSLATOR_REGION "westus2"
 ```
 
+> `HEYPOCKET_MCP_URI` is optional and only needed if you're pointing at a
+> non-default HeyPocket MCP endpoint:
+> ```powershell
+> setx HEYPOCKET_MCP_URI "https://public.heypocketai.com/mcp"
+> ```
+
 ***
 
 ### Option B: `config.ps1`
 
+Run `.\install.ps1` to generate `config.ps1` from `config_template.ps1`
+automatically, then fill in your values:
+
 ```powershell
-$HEYPOCKET_API_TOKEN = "..."
-$MS_TRANSLATOR_KEY   = "..."
+$HEYPOCKET_API_TOKEN  = "..."
+$HEYPOCKET_MCP_URI    = "https://public.heypocketai.com/mcp"   # optional
+$MS_TRANSLATOR_KEY    = "..."
 $MS_TRANSLATOR_REGION = "westus2"
 ```
 
@@ -121,6 +134,33 @@ run en
 run en,fr
 run en,fr,es
 ```
+
+***
+
+### Flag icons next to translation headings
+
+By default, each translation heading shows a larger flag icon with a
+subtle static skew/tilt (not animated). This can be adjusted:
+
+```powershell
+run en,fr -FlagStyle wave   # default: bigger flag, static wave/skew look
+run en,fr -FlagStyle flat   # bigger flag, no skew
+run en,fr -FlagStyle off    # no flag icon at all
+```
+
+***
+
+### Help
+
+```powershell
+run -Help
+run --help
+.\hpen.ps1 -Help
+.\hpen.ps1 -?
+```
+
+Prints the full parameter list and usage examples, then exits without
+requiring any API credentials to be configured.
 
 ***
 
