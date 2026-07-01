@@ -174,15 +174,18 @@ if (-not $HeyPocketToken) { throw "HEYPOCKET_API_TOKEN missing" }
 if (-not $TranslatorKey)  { throw "MS_TRANSLATOR_KEY missing" }
 
 $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-"$ts | Export Started (hpen.ps1 v$ScriptVersion)" | Tee-Object -FilePath $LogFile -Append
+"$ts Export Started (hpen.ps1 v$ScriptVersion)" | Tee-Object -FilePath $LogFile -Append
 
 $SystemLang = [System.Globalization.CultureInfo]::CurrentUICulture.TwoLetterISOLanguageName.ToLower()
 
 if ($TargetLang -and $TargetLang.Trim() -ne "") {
-    "Target Language(s): $TargetLang" | Tee-Object -FilePath $LogFile -Append
+    "$ts Target Language(s): $TargetLang" | Tee-Object -FilePath $LogFile -Appe
 }
 
-"System Language: $SystemLang" | Tee-Object -FilePath $LogFile -Append
+$ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+"$ts System Language: $SystemLang" | Tee-Object -FilePath $LogFile -Append
+
+
 
 # ==========================================================
 # LOGGING
@@ -206,9 +209,14 @@ function Log {
 $processedIds = @{}
 
 if (Test-Path $CheckpointFile) {
-    Get-Content $CheckpointFile | ForEach-Object {
-        if ($_ -and $_.Trim()) { $processedIds[$_.Trim()] = $true }
+Get-Content $CheckpointFile | ForEach-Object {
+    if ($_.Trim()) {
+        $id = ($_.Split('|')[0].Trim()).ToLower()
+        if ($id) {
+            $processedIds[$id] = $true
+        }
     }
+}
 }
 
 # ==========================================================
@@ -569,11 +577,14 @@ foreach ($r in $records) {
 # Filter out anything already exported in a previous run.
 $newIds = @{}
 foreach ($id in $ids.Keys) {
-    if (-not $processedIds.ContainsKey($id)) { $newIds[$id] = $true }
+   if (-not $processedIds.ContainsKey($id.ToLower())) {
+    $newIds[$id] = $true
+}
+
 }
 
 if ($newIds.Count -eq 0) {
-    "$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss')) | Search succeeded -- no new recordings to export" |
+    "$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss')) Search succeeded -- no new recordings to export" |
         Tee-Object -FilePath $LogFile -Append
     return
 }
@@ -611,6 +622,9 @@ $full = Extract-McpJson (Parse-SSE $detailsRaw.Content)
 # ==========================================================
 
 $processedNow = @()
+$charCountRaw = 0
+# Can seed the count or add a buffer by entering a value on the next line
+$charCountTranslated = 0
 
 foreach ($rec in @($records.recordings)) {
 
@@ -628,6 +642,9 @@ foreach ($rec in @($records.recordings)) {
     }
 
     $text = "$($rec.content)".Trim()
+	$charCountRaw += $text.Length
+	$charCountTranslated += ($text.Length * [Math]::Max(1, $TargetLangs.Count))
+
     if (-not $text) {
         Log "Skipping ${recId}: empty content"
         continue
@@ -740,10 +757,12 @@ if ($processedNow.Count -gt 0) {
     # Only append IDs not already present, in case of overlapping/interrupted
     # runs -- keeps processed_ids.txt from growing unbounded with duplicates.
     $newCheckpointLines = $processedNow | Where-Object { -not $processedIds.ContainsKey($_) } | Select-Object -Unique
-    if ($newCheckpointLines.Count -gt 0) {
+    if ($newCheckpointLines) {
         $newCheckpointLines | Add-Content $CheckpointFile
     }
 }
 
 $ts = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-"$ts | Completed: $($processedNow.Count) new exports" | Tee-Object -FilePath $LogFile -Append
+# Log "Completed: $($processedNow.Count) new exports"
+Log ("Estimated characters (raw): {0:N0}" -f $charCountRaw)
+Log ("Estimated characters (translated): {0:N0}" -f $charCountTranslated)
